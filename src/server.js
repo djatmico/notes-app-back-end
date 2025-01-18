@@ -1,9 +1,12 @@
+/* eslint-disable import/no-extraneous-dependencies */
 /* eslint-disable no-trailing-spaces */
 /* eslint-disable no-unused-vars */
 
+require('dotenv').config();
+
 const Hapi = require('@hapi/hapi');
 const notes = require('./api/notes');
-const NotesService = require('./services/inMemory/NotesService');
+const NotesService = require('./services/postgres/NotesService');
 const ClientError = require('./exceptions/ClientError');
 const NotesValidator = require('./validator/notes');
 
@@ -11,8 +14,8 @@ const init = async () => {
   const notesService = new NotesService();
   
   const server = Hapi.server({
-    port: 3000,
-    host: process.env.NODE_ENV !== 'production' ? 'localhost' : '0.0.0.0',
+    port: process.env.PORT,
+    host: process.env.HOST,
     routes: {
       cors: {
         origin: ['*'],
